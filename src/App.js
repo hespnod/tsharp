@@ -32,7 +32,7 @@ function App() {
     <div>
       <Input onSubmit={listChange} />
       <List item={itemList} onDelete={deleteHandler} />
-      <h2>{total}</h2>
+      <h2>Total value of item is :{total}</h2>
     </div>
   );
 }
