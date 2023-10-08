@@ -2,6 +2,7 @@ import { useState } from "react";
 import "./App.css";
 import Input from "./components/Input";
 import List from "./components/List";
+import TotalContext from "./context/total-context";
 
 function App() {
   const [itemList, setItemList] = useState([]);
@@ -12,28 +13,25 @@ function App() {
       return [...prevList, list];
     });
     localStorage.setItem(list.id, JSON.stringify(list));
-    setTotal((prev) => {
-      return Number(Number(prev) + Number(list.price));
-    });
   };
 
   const deleteHandler = (id) => {
     setItemList((prevItem) => {
-      const removeItem = prevItem.find((item) => item.id === id);
       const updateList = prevItem.filter((item) => item.id !== id);
-      console.log('removeItem, ', removeItem.price);
-      setTotal((prevTotal) => { return Number(prevTotal) - Number(removeItem.price) });
       return updateList;
     });
     localStorage.removeItem(id);
   };
 
   return (
-    <div>
+    <TotalContext.Provider value={{
+      total: total,
+      setTotal: setTotal
+    }}>
       <Input onSubmit={listChange} />
       <List item={itemList} onDelete={deleteHandler} />
-      <h2>Total value of item is :{total}</h2>
-    </div>
+      <h2 className='text-2xl font-serif font-bold' >Total value of item is :{total}</h2>
+    </TotalContext.Provider >
   );
 }
 
